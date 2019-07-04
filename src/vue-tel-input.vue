@@ -42,6 +42,7 @@
       :maxlength="maxLen"
       @blur="onBlur"
       @input="onInput"
+      @update="onUpdate"
       @keyup.enter="onEnter"
       @keyup.space="onSpace"
       :tabindex="inputOptions && inputOptions.tabindex ? inputOptions.tabindex : 0"
@@ -249,6 +250,7 @@ export default {
     return {
       phone: '',
       activeCountry: { iso2: '' },
+      activeCountryObj: null,
       open: false,
       selectedIndex: null,
       typeToFindInput: '',
@@ -323,6 +325,8 @@ export default {
         number: this.state ? this.formattedResult : this.phone,
         isValid: this.state,
         country: this.activeCountry,
+        countryCode: this.activeCountry.iso2,
+        dialCode: ('+' + this.activeCountry.dialCode),
       }
       // If formatting to the input is disabled, try to return the formatted value to its parent
       if (this.disabledFormatting) {
@@ -348,6 +352,9 @@ export default {
     },
   },
   methods: {
+    onUpdate() {
+      this.activeCountryObj = country;
+    },
     initializeCountry() {
       /**
        * 1. If the phone included prefix (+12), try to get the country and set it
